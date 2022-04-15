@@ -12,22 +12,36 @@
 </head>
 
 <body>
-  <div id="header">
-    <div class="title">
-      <img src="https://assets-lighthouse.alphacamp.co/uploads/image/file/17990/__.png">
-      <h2>Memory Matching Game</h2>
+  <div class="container">
+
+    <div id="header-container">
+
+      <div class="version-btn-container">
+        <div class="version-btn" id="version-btn-1">original</div>
+        <div class="version-btn" id="version-btn-2">drama</div>
+        <div class="version-btn" id="version-btn-3">movie</div>
+      </div>
+
+      <div id="header">
+        <div class="title">
+          <img src="https://assets-lighthouse.alphacamp.co/uploads/image/file/17990/__.png">
+          <h2>Memory Matching Game</h2>
+        </div>
+        <h2 class="score">Score: 0</h2>
+        <p class="tried">You have tried: 0 times</p>
+      </div>
+
     </div>
 
-    <h2 class="score">Score: 0</h2>
-    <p class="tried">You have tried: 0 times</p>
+    <div id="cards">
+      <!-- render cards here -->
+    </div>
+
+
+    <!-- my js file -->
+    <script src="./background.js"></script>
+    <script src="./main.js"></script>
   </div>
-
-  <div id="cards">
-
-  </div>
-
-  <!-- my js file -->
-  <script src="./main.js"></script>
 </body>
 
 </html>

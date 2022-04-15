@@ -1,34 +1,84 @@
-#cards{
+.container {
+  position: relative;
+}
+
+#header-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.version-btn-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.version-btn {
+  background: black;
+  color: white;
+  width: 5vw;
+  height: 2vw;
+  line-height: 2vw;
+  border-radius: 9px;
+  margin: 0 1vw;
+  cursor: pointer;
+  text-align: center;
+  font-family: "Noto Sans",
+    sans-serif;
+}
+
+.version-btn:hover {
+  background-color: #921AFF;
+}
+
+.version-btn.active {
+  background-color: #921AFF;
+}
+
+#cards {
   display: flex;
   flex-wrap: wrap;
-  width: 85%; /* 新增：寬度和標頭一致 */
-  margin: 0 auto;  /* 新增：置中 */
+  width: 85%;
+  /* 新增：寬度和標頭一致 */
+  margin: 0 auto;
+  /* 新增：置中 */
   /* border: 1px red solid; */
 }
 
 .card {
-  flex: 1 1 7%; /* 每個 item 分配容器寬度 */
+  flex: 1 1 7%;
+  /* 每個 item 分配容器寬度 */
   /* flex 縮寫的表定順序是 flex-grow → flex-shrink → flex-basis */
-  height: 8vw; /* 依視窗的寬度等比例變化 */
+  height: 8vw;
+  /* 依視窗的寬度等比例變化 */
   border: 2px solid #e0e0e0;
 
-  margin: 2px; /* 卡片邊距 */
-  box-sizing: border-box; /* 設定 box-sizing*/
+  margin: 2px;
+  /* 卡片邊距 */
+  box-sizing: border-box;
+  /* 設定 box-sizing*/
 
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
 }
+
 
 .card img {
   max-width: 30%;
   align-self: center;
+  z-index: 2;
+  filter: invert(100%);
 }
 
 .card p {
   margin: 3px;
-  font-size: 10px;
+  font-size: 18px;
+  z-index: 2;
+  font-weight: bold;
+  font-family: FreeMono,
+    monospace;
+  color: white;
 }
 
 .card p:last-child {
@@ -36,12 +86,13 @@
 }
 
 .back {
-  background: url('https://assets-lighthouse.alphacamp.co/uploads/image/file/9222/ExportedContentImage_00.png');
-  background-size: cover;
+  /* background: url('https://assets-lighthouse.alphacamp.co/uploads/image/file/9222/ExportedContentImage_00.png'); */
+  background: url('./pic/original back.png');
+  background-size: contain;
 }
 
 .paired {
-  background-color: #dae0e3;
+  /* background-color: #dae0e3; */
 }
 
 #header {
@@ -78,19 +129,17 @@
 
 .fail {
   animation-name: failMatchAnimation;
-  animation-duration: 0.2s; 
+  animation-duration: 0.2s;
   /* 每一次用0.2秒加入黃色邊框 */
   animation-iteration-count: 5;
   /* 總共做5次 */
 }
 
 @keyframes failMatchAnimation {
-  0% {
-
-  }
+  0% {}
 
   100% {
-    border: 2px solid #ffd54f;
+    border: 4px solid #ffd54f;
   }
 }
 
@@ -103,13 +152,15 @@
   width: 100vw;
   padding: 50px 0;
 }
-.completed > p {
+
+.completed>p {
   font-size: 1.5em;
   color: black;
   text-align: center;
   margin: 0;
 }
-.completed > p:first-child {
+
+.completed>p:first-child {
   font-size: 3em;
   font-weight: 700;
   color: #758d9a;

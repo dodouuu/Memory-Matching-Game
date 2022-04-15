@@ -1,5 +1,6 @@
 'use strict'
 
+// 變數區域
 const GOAL = 260
 
 const GAME_STATE = {
@@ -16,6 +17,8 @@ const Symbols = [
   'https://assets-lighthouse.alphacamp.co/uploads/image/file/17991/diamonds.png', // 方塊花色
   'https://assets-lighthouse.alphacamp.co/uploads/image/file/17988/__.png' // 梅花花色
 ]
+
+const versionSwitch = document.querySelector('.version-btn-container')
 
 const model = {
   // data
@@ -35,6 +38,7 @@ const view = {
     const number = this.transformNumber((index % 13) + 1)
     const symbol = Symbols[Math.floor(index / 13)]
     return `
+    
       <p>${number}</p>
       <img src="${symbol}">
       <p>${number}</p>
@@ -51,8 +55,10 @@ const view = {
   displayCards(randomNumbers) {
     const rootElement = document.querySelector('#cards')
     const array1 = randomNumbers
+
     const array2 = array1.map(index => this.getCardElement(index))
     const str = array2.join('')
+
     rootElement.innerHTML = str
   },
 
@@ -70,25 +76,75 @@ const view = {
         return number
     }
   },
-
+  switchBackground(event) { // 按左上角切換風格的按鈕，會進來
+    const target = event.target;
+    if (target.matches('#version-btn-1')) {
+      target.classList.add('active')
+      target.nextElementSibling.classList.remove('active')
+      target.nextElementSibling.nextElementSibling.classList.remove('active')
+      background = Array.from(background1)
+      document.querySelectorAll('.card').forEach(element => {
+        if (element.matches('.back')) {
+          element.style.backgroundImage = view.getBackgroundImage(Number(52))
+        } else if (element.matches('.paired')) {
+          element.style.backgroundImage = view.getBackgroundImage(Number(element.dataset.index))
+        }
+        element.style.backgroundSize = 'contain';
+      })
+    } else if (target.matches('#version-btn-2')) {
+      target.classList.add('active')
+      target.previousElementSibling.classList.remove('active')
+      target.nextElementSibling.classList.remove('active')
+      background = Array.from(background2)
+      document.querySelectorAll('.card').forEach(element => {
+        if (element.matches('.back')) {
+          element.style.backgroundImage = view.getBackgroundImage(Number(52))
+        } else if (element.matches('.paired')) {
+          element.style.backgroundImage = view.getBackgroundImage(Number(element.dataset.index))
+        }
+        element.style.backgroundSize = 'contain';
+      })
+    } else if (target.matches('#version-btn-3')) {
+      target.classList.add('active')
+      target.previousElementSibling.classList.remove('active')
+      target.previousElementSibling.previousElementSibling.classList.remove('active')
+      background = Array.from(background3)
+      document.querySelectorAll('.card').forEach(element => {
+        if (element.matches('.back')) {
+          element.style.backgroundImage = view.getBackgroundImage(Number(52))
+        } else if (element.matches('.paired')) {
+          element.style.backgroundImage = view.getBackgroundImage(Number(element.dataset.index))
+        }
+        element.style.backgroundSize = 'contain';
+      })
+    }
+  },
+  getBackgroundImage(index) {
+    return background[index].bg
+  },
   // filipCards (1, 2, 3, 4, 5)
   // cards = [1, 2, 3, 4, 5]
-  flipCards(...cards) {
+  flipCards(...cards) { // 點選任何一張還沒配對成功的卡牌，會進來
     cards.map(card => {
       if (card.classList.contains('back')) { // 目前是背面
         // 回傳正面
         card.classList.remove('back')
-        card.innerHTML = this.getCardContent(Number(card.dataset.index))
+        const index = card.dataset.index
+        card.innerHTML = this.getCardContent(Number(index))
+        card.style.backgroundImage = this.getBackgroundImage(Number(index))
+        card.style.backgroundSize = 'contain';
 
       } else { // 目前是正面
         // 回傳背面
         card.classList.add('back')
         card.innerHTML = null // 把<p>和<img>清空
+        card.style.backgroundImage = this.getBackgroundImage(Number(52))
+        card.style.backgroundSize = 'contain';
       }
     })
   },
 
-  pairCards(...cards) {
+  pairCards(...cards) { // 把配對成功的一對牌， class 加上 'paired'
     cards.map(card => {
       card.classList.add('paired')
     })
@@ -164,7 +220,7 @@ const controller = {
           view.renderScore(model.score += 10)
 
           if (model.score === GOAL) {
-            console.log('show game finished')
+            // console.log('show game finished')
             this.currentState = GAME_STATE.GameFinished
             view.showGameFinished()
             return
@@ -185,7 +241,6 @@ const controller = {
   },
 
   resetCards() {
-    // console.log('resetCards')
     view.flipCards(...model.revealedCards) // 翻面
     model.revealedCards = [] // 清空
     controller.currentState = GAME_STATE.FirstCardAwaits
@@ -209,8 +264,9 @@ const utility = { // 小工具，外掛函式庫
   }
 }
 
+// 主要流程開始
 controller.generateCards()
-
+// 監聽器區域 
 // 為52張牌，每張牌都加上監聽器
 // document.querySelectorAll('.card').forEach( card => {
 //   card.addEventListener('click', event => {
@@ -218,12 +274,19 @@ controller.generateCards()
 //   })
 // })
 document.querySelectorAll('.card').forEach(add52Listeners)
+
 function add52Listeners(element) {
   element.addEventListener('click', clickTriggerAction)
 }
+
 function clickTriggerAction(event) {
   const target = event.target
-  // console.log('target =', target)
   controller.dispatchCardAction(target)
 
 }
+
+versionSwitch.addEventListener('click', view.switchBackground)
+
+background = Array.from(background1)
+
+
